@@ -13,9 +13,8 @@ svg {
 }
 
 </style>
-<html>
     <body><a href="index.html">Index</a></body>
-    </html>
+    <svg width="960" height="960"></svg>
 <script src="//d3js.org/d3.v3.min.js"></script>
 <script>
 
@@ -30,7 +29,7 @@ var x,
 
 var color = d3.scale.category10();
 
-var svg = d3.select("body").append("svg")
+var svg = d3.select("svg")
     .attr("width", w + m[1] + m[3])
     .attr("height", h + m[0] + m[2])
   .append("g")
