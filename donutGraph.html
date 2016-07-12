@@ -48,6 +48,7 @@ var svg = d3.select("body").append("svg")
     .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 d3.tsv("data.tsv", type, function(error, data) {
+    console.log("Data: " + JSON.stringify(data))
   var path = svg.datum(data).selectAll("path")
       .data(pie)
     .enter().append("path")
