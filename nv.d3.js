@@ -85,7 +85,7 @@ nv.render = function render(step) {
     step = step || 1;
 
     nv.render.active = true;
-    if(dev === true){
+    if(nv.dev === true){
         nv.dispatch.render_start();
     }
     
