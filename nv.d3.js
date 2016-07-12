@@ -85,7 +85,10 @@ nv.render = function render(step) {
     step = step || 1;
 
     nv.render.active = true;
-    nv.dispatch.render_start();
+    if(dev === true){
+        nv.dispatch.render_start();
+    }
+    
 
     var renderLoop = function() {
         var chart, graph;
