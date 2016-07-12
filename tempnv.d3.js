@@ -197,7 +197,8 @@ nv.interactiveGuideline = function() {
     //Please pass in the bounding chart's top and left margins
     //This is important for calculating the correct mouseX/Y positions.
     var margin = {left: 0, top: 0}
-        , xScale = d3.scale.linear()
+        //CHANGED
+        , xScale = d3.scaleLinear()
         , dispatch = d3.dispatch('elementMousemove', 'elementMouseout', 'elementClick', 'elementDblclick')
         , showGuideLine = true;
     //Must pass in the bounding chart's <svg> container.
@@ -593,7 +594,7 @@ nv.nearestValueIndex = function (values, searchVal, threshold) {
 
             trowEnter.selectAll("td").each(function(p) {
                 if (p.highlight) {
-                    var opacityScale = d3.scale.linear().domain([0,1]).range(["#fff",p.color]);
+                    var opacityScale = d3.scaleLinear().domain([0,1]).range(["#fff",p.color]);
                     var opacity = 0.6;
                     d3.select(this)
                         .style("border-bottom-color", opacityScale(opacity))
@@ -977,7 +978,8 @@ nv.utils.getColor = function(color) {
     //if passed an array, turn it into a color scale
     // use isArray, instanceof fails if d3 range is created in an iframe
     } else if(Array.isArray(color)) {
-        var color_scale = d3.scale.ordinal().range(color);
+        //CHANGED
+        var color_scale = d3.scaleOrdinal().range(color);
         return function(d, i) {
             var key = i === undefined ? d : i;
             return d.color || color_scale(key);
@@ -1011,7 +1013,8 @@ looks for a corresponding color from the dictionary
 nv.utils.customTheme = function(dictionary, getKey, defaultColors) {
     // use default series.key if getKey is undefined
     getKey = getKey || function(series) { return series.key };
-    defaultColors = defaultColors || d3.scale.category20().range();
+        //CHANGED
+    defaultColors = defaultColors || d3.scaleCategory20().range();
 
     // start at end of default color list and walk back to index 0
     var defIndex = defaultColors.length;
@@ -1555,7 +1558,7 @@ nv.models.axis = function() {
     //------------------------------------------------------------
 
     var axis = d3.svg.axis();
-    var scale = d3.scale.linear();
+    var scale = d3.scaleLinear();
 
     var margin = {top: 0, right: 0, bottom: 0, left: 0}
         , width = 75 //only used for tickLabel currently
@@ -1935,8 +1938,9 @@ nv.models.boxPlot = function() {
         , width = 960
         , height = 500
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
-        , x = d3.scale.ordinal()
-        , y = d3.scale.linear()
+        //CHANGED to scaleOrdinal and scaleLinear from scale.ordinal scale.linear
+        , x = d3.scaleOrdinal()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , color = nv.utils.defaultColor()
@@ -2525,12 +2529,16 @@ nv.models.bullet = function() {
 
             // Setup Scales
             // Compute the new x-scale.
-            var x1 = d3.scale.linear()
+            
+            //CHANGED
+            var x1 = d3.scaleLinear()
                 .domain( d3.extent(d3.merge([forceX, rangez])) )
                 .range(reverse ? [availableWidth, 0] : [0, availableWidth]);
 
             // Retrieve the old x-scale, if this is an update.
-            var x0 = this.__chart__ || d3.scale.linear()
+            
+            //CHANGED
+            var x0 = this.__chart__ || d3.scaleLinear()
                 .domain([0, Infinity])
                 .range(x1.range());
 
@@ -2784,7 +2792,9 @@ nv.models.bulletChart = function() {
                 .range(reverse ? [availableWidth, 0] : [0, availableWidth]);
 
             // Retrieve the old x-scale, if this is an update.
-            var x0 = this.__chart__ || d3.scale.linear()
+            
+            //CHANGED
+            var x0 = this.__chart__ || d3.scaleLinear()
                 .domain([0, Infinity])
                 .range(x1.range());
 
@@ -2948,8 +2958,9 @@ nv.models.candlestickBar = function() {
         , height = null
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
         , container
-        , x = d3.scale.linear()
-        , y = d3.scale.linear()
+        //CHANGED
+        , x = d3.scaleLinear()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , getOpen = function(d) { return d.open }
@@ -3218,7 +3229,8 @@ nv.models.cumulativeLineChart = function() {
     // Private Variables
     //------------------------------------------------------------
 
-    var dx = d3.scale.linear()
+        //CHANGED
+    var dx = d3.scaleLinear()
         , index = {i: 0, x: 0}
         , renderWatch = nv.utils.renderWatch(dispatch, duration)
         ;
@@ -3832,8 +3844,10 @@ nv.models.discreteBar = function() {
         , height = 500
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
         , container
-        , x = d3.scale.ordinal()
-        , y = d3.scale.linear()
+        
+        //CHANGED
+        , x = d3.scaleOrdinal()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , forceY = [0] // 0 is forced by default.. this makes sense for the majority of bar graphs... user can always do chart.forceY([]) to remove
@@ -4333,7 +4347,7 @@ nv.models.distribution = function() {
         , axis = 'x' // 'x' or 'y'... horizontal or vertical
         , getData = function(d) { return d[axis] }  // defaults d.x or d.y
         , color = nv.utils.defaultColor()
-        , scale = d3.scale.linear()
+        , scale = d3.scaleLinear()
         , domain
         , duration = 250
         , dispatch = d3.dispatch('renderEnd')
@@ -4831,8 +4845,10 @@ nv.models.historicalBar = function() {
         , height = null
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
         , container = null
-        , x = d3.scale.linear()
-        , y = d3.scale.linear()
+        
+        //CHANGED
+        , x = d3.scaleLinear()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , forceX = []
@@ -7618,8 +7634,9 @@ nv.models.multiBar = function() {
     var margin = {top: 0, right: 0, bottom: 0, left: 0}
         , width = 960
         , height = 500
-        , x = d3.scale.ordinal()
-        , y = d3.scale.linear()
+        //CHANGED
+        , x = d3.scaleOrdinal()
+        , y = d3.scaleLinear()
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
         , container = null
         , getX = function(d) { return d.x }
@@ -8472,8 +8489,9 @@ nv.models.multiBarHorizontal = function() {
         , height = 500
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
         , container = null
-        , x = d3.scale.ordinal()
-        , y = d3.scale.linear()
+        //CHANGED
+        , x = d3.scaleOrdinal()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , getYerr = function(d) { return d.yErr }
@@ -8565,7 +8583,7 @@ nv.models.multiBarHorizontal = function() {
                 y.range(yRange || [0, availableWidth]);
 
             x0 = x0 || x;
-            y0 = y0 || d3.scale.linear().domain(y.domain()).range([y(0),y(0)]);
+            y0 = y0 || d3.scaleLinear().domain(y.domain()).range([y(0),y(0)]);
 
             // Setup containers and skeleton of chart
             var wrap = d3.select(this).selectAll('g.nv-wrap.nv-multibarHorizontal').data([data]);
@@ -9222,9 +9240,10 @@ nv.models.multiChart = function() {
     // Private Variables
     //------------------------------------------------------------
 
-    var x = d3.scale.linear(),
-        yScale1 = d3.scale.linear(),
-        yScale2 = d3.scale.linear(),
+        //CHANGED
+    var x = d3.scaleLinear(),
+        yScale1 = d3.scaleLinear(),
+        yScale2 = d3.scaleLinear(),
 
         lines1 = nv.models.line().yScale(yScale1),
         lines2 = nv.models.line().yScale(yScale2),
@@ -9625,8 +9644,8 @@ nv.models.ohlcBar = function() {
         , height = null
         , id = Math.floor(Math.random() * 10000) //Create semi-unique ID in case user doesn't select one
         , container = null
-        , x = d3.scale.linear()
-        , y = d3.scale.linear()
+        , x = d3.scaleLinear()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , getOpen = function(d) { return d.open }
@@ -9855,7 +9874,7 @@ nv.models.parallelCoordinates = function() {
     var margin = {top: 30, right: 0, bottom: 10, left: 0}
         , width = null
         , height = null
-        , x = d3.scale.ordinal()
+        , x = d3.scaleOrdinal()
         , y = {}
         , dimensionNames = []
         , dimensionFormats = []
@@ -9903,7 +9922,8 @@ nv.models.parallelCoordinates = function() {
                 }
                 //Use 90% of (availableHeight - 12) for the axis range, 12 reprensenting the space necessary to display "undefined values" text.
                 //The remaining 10% are used to display the missingValue line.
-                y[d] = d3.scale.linear()
+        //CHANGED
+                y[d] = d3.scaleLinear()
                     .domain(extent)
                     .range([(availableHeight - 12) * 0.9, 0]);
 
@@ -10038,7 +10058,8 @@ nv.models.parallelCoordinates = function() {
                         //If it's not already the case, allow brush to select undefined values
                         if(axisWithMissingValues.indexOf(p) < 0) {
 
-                            var newscale = d3.scale.linear().domain([min, domain[1]]).range([availableHeight - 12, range[1]]);
+        //CHANGED
+                            var newscale = d3.scaleLinear().domain([min, domain[1]]).range([availableHeight - 12, range[1]]);
                             y[p].brush.y(newscale);
                             axisWithMissingValues.push(p);
                         }
@@ -10837,9 +10858,10 @@ nv.models.scatter = function() {
         , color        = nv.utils.defaultColor() // chooses color
         , id           = Math.floor(Math.random() * 100000) //Create semi-unique ID incase user doesn't select one
         , container    = null
-        , x            = d3.scale.linear()
-        , y            = d3.scale.linear()
-        , z            = d3.scale.linear() //linear because d3.svg.shape.size is treated as area
+        //CHANGED
+        , x            = d3.scaleLinear()
+        , y            = d3.scaleLinear()
+        , z            = d3.scaleLinear() //linear because d3.svg.shape.size is treated as area
         , getX         = function(d) { return d.x } // accessor to get the x value
         , getY         = function(d) { return d.y } // accessor to get the y value
         , getSize      = function(d) { return d.size || 1} // accessor to get the point size
@@ -11758,8 +11780,9 @@ nv.models.sparkline = function() {
         , height = 32
         , container = null
         , animate = true
-        , x = d3.scale.linear()
-        , y = d3.scale.linear()
+        //CHANGED
+        , x = d3.scaleLinear()
+        , y = d3.scaleLinear()
         , getX = function(d) { return d.x }
         , getY = function(d) { return d.y }
         , color = nv.utils.getColor(['#000'])
@@ -12973,8 +12996,9 @@ nv.models.sunburst = function() {
         , dispatch = d3.dispatch('chartClick', 'elementClick', 'elementDblClick', 'elementMousemove', 'elementMouseover', 'elementMouseout', 'renderEnd')
         ;
 
-    var x = d3.scale.linear().range([0, 2 * Math.PI]);
-    var y = d3.scale.sqrt();
+        //CHANGED
+    var x = d3.scaleLinear().range([0, 2 * Math.PI]);
+    var y = d3.scaleSqrt();
 
     var partition = d3.layout.partition()
         .sort(null)
