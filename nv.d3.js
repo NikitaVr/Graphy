@@ -998,7 +998,9 @@ Default color chooser uses a color scale of 20 colors from D3
  */
 nv.utils.defaultColor = function() {
     // get range of the scale so we'll turn it into our own function.
-    return nv.utils.getColor(d3.scale.category20().range());
+    
+    //CHANGED scale.category20 to scaleCategory20 to work with new d3?
+    return nv.utils.getColor(d3.scaleCategory20().range());
 };
 
 
