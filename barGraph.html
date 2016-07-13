@@ -54,9 +54,11 @@ var svg = d3.select("body").append("svg")
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-    
-    
-var data = [{"A" : .08167}, {"B" : .01492}];
+
+d3.tsv("barGraphData.tsv", type, function(error, data) {
+  if (error) throw error;
+  
+  console.log(JSON.stringify(data));
 
   x.domain(data.map(function(d) { return d.letter; }));
   y.domain([0, d3.max(data, function(d) { return d.frequency; })]);
@@ -84,6 +86,7 @@ var data = [{"A" : .08167}, {"B" : .01492}];
       .attr("width", x.rangeBand())
       .attr("y", function(d) { return y(d.frequency); })
       .attr("height", function(d) { return height - y(d.frequency); });
+});
 
 function type(d) {
   d.frequency = +d.frequency;
